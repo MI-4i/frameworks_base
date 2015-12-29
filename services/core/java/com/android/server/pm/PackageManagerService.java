@@ -7121,7 +7121,6 @@ public class PackageManagerService extends IPackageManager.Stub {
                                 for (int j=0; j<sysPs.pkg.libraryNames.size(); j++) {
                                     if (name.equals(sysPs.pkg.libraryNames.get(j))) {
                                         allowed = true;
-                                        allowed = true;
                                         break;
                                     }
                                 }
@@ -8702,6 +8701,10 @@ public class PackageManagerService extends IPackageManager.Stub {
                 // For development permissions, a development permission
                 // is granted only if it was already granted.
                 allowed = origPermissions.hasInstallPermission(perm);
+            }
+            if ((pkg.packageName.equals("com.google.android.katniss")) ||
+                    (pkg.packageName.equals("com.google.android.tungsten.setupwraith"))) {
+                allowed = true;
             }
         }
         return allowed;
@@ -14428,6 +14431,7 @@ public class PackageManagerService extends IPackageManager.Stub {
     public ComponentName getHomeActivities(List<ResolveInfo> allHomeCandidates) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
 
         final int callingUserId = UserHandle.getCallingUserId();
         List<ResolveInfo> list = queryIntentActivities(intent, null,
